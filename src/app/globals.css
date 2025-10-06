@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+h2 {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 700;
+  line-height: normal;
+  color: #6B0606;
+}
