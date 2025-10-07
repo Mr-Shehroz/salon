@@ -5,9 +5,9 @@ import React from 'react'
 const Treatment = () => {
     return (
         <section className='xl:pt-20 pt-5 bg-white'>
-            <div className='flex flex-col md:flex-row justify-between items-center xl:px-20 px-5 xl:max-w-[1400px] max-w-[900px] mx-auto'>
+            <div className='flex flex-col md:flex-row justify-between items-center xl:px-20 px-5 2xl:max-w-[1400px] xl:max-w-[1150px] max-w-[900px] mx-auto'>
                 <div>
-                    <Image src="/1.svg" alt='nail' height={100} width={100} className='2xl:w-[550px] xl:w-[480px] lg:w-[350px] md:w-[300px] w-full h-auto' />
+                    <Image src="/1.svg" alt='nail' height={100} width={100} className='2xl:w-[550px] xl:w-[480px] lg:w-[350px] md:w-[300px] w-[350px] h-auto' />
                 </div>
                 <div className='flex flex-col justify-center items-center text-center xl:gap-4 gap-2 my-5 md:my-0'>
                     <h2 className='text-[50px]'>Treatments and prices</h2>
