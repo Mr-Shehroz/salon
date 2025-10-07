@@ -10,7 +10,7 @@ const Treatment = () => {
                 <div>
                     <Image src="/1.svg" alt='nail' height={100} width={100} className='2xl:w-[550px] xl:w-[480px] lg:w-[350px] md:w-[300px] w-[350px] h-auto' />
                 </div>
-                <div className='flex flex-col justify-center items-center text-center xl:gap-4 gap-2 my-5 md:my-0'>
+                <div className='flex flex-col justify-center items-center text-center xl:gap-4 gap-2 mb-5 mt-8 md:my-0'>
                     <h2 className='text-[50px]'>Treatments and prices</h2>
                     <p className='text-[#909090] 2xl:text-[16px] text-[14px]'>Velit in dui dictum arcu felis tempor in feugiat in mauris...</p>
                     <div className='flex gap-4 items-center'>
