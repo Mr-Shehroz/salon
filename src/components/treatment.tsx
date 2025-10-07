@@ -4,7 +4,7 @@ import React from 'react'
 
 const Treatment = () => {
     return (
-        <section className='xl:pt-20 pt-5 bg-white'>
+        <section className='xl:py-20 py-5 bg-white'>
             <div className='flex flex-col md:flex-row justify-between items-center xl:px-20 px-5 2xl:max-w-[1400px] xl:max-w-[1150px] max-w-[900px] mx-auto'>
                 <div>
                     <Image src="/1.svg" alt='nail' height={100} width={100} className='2xl:w-[550px] xl:w-[480px] lg:w-[350px] md:w-[300px] w-[350px] h-auto' />
