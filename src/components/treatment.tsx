@@ -6,6 +6,7 @@ const Treatment = () => {
     return (
         <section className='xl:py-20 py-5 bg-white'>
             <div className='flex flex-col md:flex-row justify-between items-center xl:px-20 px-5 2xl:max-w-[1400px] xl:max-w-[1150px] max-w-[900px] mx-auto'>
+                <div className='md:hidden border border-dashed w-full border-[#909090] mb-15'/>
                 <div>
                     <Image src="/1.svg" alt='nail' height={100} width={100} className='2xl:w-[550px] xl:w-[480px] lg:w-[350px] md:w-[300px] w-[350px] h-auto' />
                 </div>

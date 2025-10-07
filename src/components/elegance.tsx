@@ -3,7 +3,7 @@ import React from 'react'
 
 const Elegance = () => {
   return (
-    <section className='bg-white py-20 px-5'>
+    <section className='bg-white md:py-20 py-10 px-5'>
         <div className='text-center max-w-[900px] mx-auto px-5'>
             <h2 className='text-[50px] lg:mb-8 mb-4'>Elegance comes from being as beautiful inside as outside</h2>
             <p className='font-normal 2xl:text-[18px] lg:text-[16px] text-[14px] text-[#909090] font-inter'>Eleifend arcu non lorem justo in tempus purus gravida. Est tortor egestas sed feugiat elementum. Viverra nulla amet a ultrices massa dui. Tortor est purus morbi vitae arcu suspendisse amet.</p>
