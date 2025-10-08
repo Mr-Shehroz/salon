@@ -1,11 +1,55 @@
-"use client"
+"use client";
 import Contactbanner from "@/components/contact-banner";
 import Gallery from "@/components/gallery";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget; // 👈 Capture it immediately
+    setIsSubmitting(true);
+    setMessage(null);
+
+    const formData = new FormData(form); // use `form` here
+    const data = {
+      firstName: formData.get("firstName")?.toString() || "",
+      lastName: formData.get("lastName")?.toString() || "",
+      phone: formData.get("phone")?.toString() || "",
+      service: formData.get("service")?.toString() || "",
+      date: formData.get("date")?.toString() || "",
+      time: formData.get("time")?.toString() || "",
+    };
+
+    const res = await fetch("/api/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      setMessage({
+        type: "success",
+        text: "Your appointment request has been sent!",
+      });
+      form.reset(); // ✅ Safe: `form` is captured before async
+    } else {
+      const errorData = await res.json();
+      setMessage({
+        type: "error",
+        text: errorData.error || "Something went wrong. Please try again.",
+      });
+    }
+
+    setIsSubmitting(false);
+  };
   // Animation variants
   const container = {
     hidden: { opacity: 0 },
@@ -39,10 +83,10 @@ const Contact = () => {
         whileInView="show"
         viewport={{ once: true, margin: "-100px" }}
       >
-        {[ 
+        {[
           { title: "Address", content: "19 North Road Piscataway, NJ 08854" },
           { title: "Email", content: "gamma@sbcglobal.net" },
-          { title: "Phone", content: "(246) 917-5787" }
+          { title: "Phone", content: "(246) 917-5787" },
         ].map((info, index) => (
           <motion.div
             key={index}
@@ -59,7 +103,6 @@ const Contact = () => {
 
       {/* Form Background */}
       <section className="bg-[#F3E2D5] h-[372px] xl:mt-12 mt-8 relative lg:mb-100 md:mb-200 mb-230">
-        
         {/* Desktop Form */}
         <motion.section
           className="hidden bg-white xl:w-[1076px] xl:h-[657px] lg:w-[90%] xl:p-15 lg:py-10 lg:px-5 md:p-10 absolute lg:top-[120%] md:top-[170%] top-[100%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow md:flex flex-col lg:flex-row lg:justify-between justify-center"
@@ -85,12 +128,13 @@ const Contact = () => {
               Mi senectus ac ullamcorper sollicitudin volutpat sit a velit.
               Purus scelerisque
             </p>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex justify-between items-center mt-7">
                 <div className="flex flex-col items-start gap-2">
                   <label className="text-black">First name</label>
                   <input
                     type="text"
+                    name="firstName"
                     placeholder="First Name"
                     className="2xl:text-[18px] xl:text-[16px] text-[14px] text-black border border-[#909090] py-[6px] px-3"
                   />
@@ -99,6 +143,7 @@ const Contact = () => {
                   <label className="text-black">Last name</label>
                   <input
                     type="text"
+                    name="lastName"
                     placeholder="Last Name"
                     className="2xl:text-[18px] xl:text-[16px] text-[14px] text-black border border-[#909090] py-[6px] px-3"
                   />
@@ -110,6 +155,7 @@ const Contact = () => {
                   <label className="text-black">Phone</label>
                   <input
                     type="tel"
+                    name="phone"
                     placeholder="Phone"
                     className="2xl:text-[18px] xl:text-[16px] text-[14px] text-black border border-[#909090] py-[6px] px-3"
                   />
@@ -119,6 +165,7 @@ const Contact = () => {
                   <select
                     className="2xl:text-[18px] xl:text-[16px] text-[14px] text-black border border-[#909090] py-[6px] px-3 bg-white appearance-none"
                     defaultValue=""
+                    name="service"
                     required
                   >
                     <option value="" disabled>
@@ -140,6 +187,7 @@ const Contact = () => {
                   <label className="text-black">Date</label>
                   <input
                     type="date"
+                    name="date"
                     placeholder="Date"
                     className="2xl:text-[18px] xl:text-[16px] text-[14px] text-black border border-[#909090] py-[6px] px-3"
                   />
@@ -148,6 +196,7 @@ const Contact = () => {
                   <label className="text-black">Time</label>
                   <input
                     type="time"
+                    name="time"
                     placeholder="Time"
                     className="2xl:text-[18px] xl:text-[16px] text-[14px] text-black border border-[#909090] py-[6px] px-3"
                   />
@@ -156,10 +205,23 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="bg-[#6B0606] hover:bg-[#8a0808] w-full py-[6px] 2xl:text-[24px] xl:text-[20px] text-[18px] mt-9 font-bold transition-colors duration-200"
+                disabled={isSubmitting}
+                className="bg-[#6B0606] hover:bg-[#8a0808] w-full py-[6px] 2xl:text-[24px] xl:text-[20px] text-[18px] mt-9 font-bold transition-colors duration-200 disabled:opacity-70"
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
+
+              {message && (
+                <p
+                  className={`mt-3 text-center ${
+                    message.type === "success"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {message.text}
+                </p>
+              )}
             </form>
           </div>
         </motion.section>
@@ -193,20 +255,27 @@ const Contact = () => {
               Purus scelerisque
             </p>
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-col gap-4 mb-5">
-                {["First name", "Last name", "Phone", "Services", "Date", "Time"].map((label, i) => (
+                {[
+                  { label: "First name", name: "firstName", type: "text" },
+                  { label: "Last name", name: "lastName", type: "text" },
+                  { label: "Phone", name: "phone", type: "tel" },
+                  { label: "Services", name: "service", type: "select" },
+                  { label: "Date", name: "date", type: "date" },
+                  { label: "Time", name: "time", type: "time" },
+                ].map((field, i) => (
                   <div key={i} className="flex flex-col gap-2">
                     <label className="text-black text-[14px] font-medium">
-                      {label}
+                      {field.label}
                     </label>
-                    {label === "Services" ? (
+                    {field.type === "select" ? (
                       <select
+                        name="service"
                         className="text-[14px] text-black border border-[#909090] py-3 px-4 rounded appearance-none bg-white"
-                        defaultValue=""
                         required
                       >
-                        <option value="" disabled>Select a service</option>
+                        <option value="">Select a service</option>
                         <option value="haircut">Haircut</option>
                         <option value="coloring">Hair Coloring</option>
                         <option value="manicure">Manicure</option>
@@ -215,21 +284,12 @@ const Contact = () => {
                         <option value="waxing">Waxing</option>
                         <option value="massage">Massage</option>
                       </select>
-                    ) : label === "Date" ? (
-                      <input
-                        type="date"
-                        className="text-[14px] text-black border border-[#909090] py-3 px-4 rounded"
-                      />
-                    ) : label === "Time" ? (
-                      <input
-                        type="time"
-                        className="text-[14px] text-black border border-[#909090] py-3 px-4 rounded"
-                      />
                     ) : (
                       <input
-                        type={label === "Phone" ? "tel" : "text"}
-                        placeholder={label}
+                        name={field.name}
+                        type={field.type}
                         className="text-[14px] text-black border border-[#909090] py-3 px-4 rounded"
+                        required
                       />
                     )}
                   </div>
@@ -238,10 +298,23 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="bg-[#6B0606] hover:bg-[#8a0808] w-full py-3 text-[18px] font-bold text-white rounded transition-colors duration-200"
+                disabled={isSubmitting}
+                className="bg-[#6B0606] hover:bg-[#8a0808] w-full py-[6px] 2xl:text-[24px] xl:text-[20px] text-[18px] mt-9 font-bold transition-colors duration-200 disabled:opacity-70"
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
+
+              {message && (
+                <p
+                  className={`mt-3 text-center ${
+                    message.type === "success"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {message.text}
+                </p>
+              )}
             </form>
           </div>
         </motion.section>
