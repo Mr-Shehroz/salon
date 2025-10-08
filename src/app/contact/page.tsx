@@ -79,9 +79,9 @@ const Contact = () => {
         viewport={{ once: true, margin: "-100px" }}
       >
         {[
-          { title: "Address", content: "19 North Road Piscataway, NJ 08854" },
-          { title: "Email", content: "gamma@sbcglobal.net" },
-          { title: "Phone", content: "(246) 917-5787" },
+          { title: "Address", content: "Islam Nagar Near Karian's Tomb" },
+          { title: "Email", content: "khushibeautysalon.pk@gmail.com" },
+          { title: "Phone", content: "+923198377407" },
         ].map((info, index) => (
           <motion.div
             key={index}
